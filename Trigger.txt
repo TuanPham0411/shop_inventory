@@ -1,0 +1,35 @@
+CREATE TRIGGER UpdateInventoryOnIncoming
+ON IncomingStock
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @ItemID NVARCHAR(6), @SizeID TINYINT, @Quantity INT;
+
+    SELECT @ItemID = i.ItemID, @SizeID = i.SizeID, @Quantity = i.Quantity
+    FROM Inserted i;
+
+    IF EXISTS (SELECT 1 FROM Inventory WHERE ItemID = @ItemID AND SizeID = @SizeID)
+    BEGIN
+        UPDATE Inventory
+        SET Quantity = Quantity + @Quantity, UpdatedDate = GETDATE()
+        WHERE ItemID = @ItemID AND SizeID = @SizeID;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO Inventory (InventoryID, ItemID, SizeID, Quantity, ImportDate, CreatedDate, UpdatedDate)
+        VALUES ('INV' + CAST((SELECT MAX(CAST(SUBSTRING(InventoryID, 4, LEN(InventoryID)) AS INT)) + 1 FROM Inventory) AS NVARCHAR(6)), @ItemID, @SizeID, @Quantity, GETDATE(), GETDATE(), GETDATE());
+    END;
+END;
+
+CREATE TRIGGER UpdateInventoryOnOutgoing
+ON OutgoingStock
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @ItemID NVARCHAR(6), @SizeID TINYINT, @Quantity INT;
+    SELECT @ItemID = o.ItemID, @SizeID = o.SizeID, @Quantity = o.Quantity
+    FROM Inserted o;
+    UPDATE Inventory
+    SET Quantity = Quantity - @Quantity, UpdatedDate = GETDATE()
+    WHERE ItemID = @ItemID AND SizeID = @SizeID;
+END;

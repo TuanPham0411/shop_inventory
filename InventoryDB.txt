@@ -1,0 +1,88 @@
+CREATE DATABASE InventoryDB;
+GO
+
+USE InventoryDB;
+GO
+
+CREATE TABLE Brands (
+    BrandID INT PRIMARY KEY IDENTITY(1,1),
+    BrandName NVARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Genders (
+    GenderID TINYINT PRIMARY KEY,
+    Gender NVARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Sizes (
+    SizeID TINYINT PRIMARY KEY,
+    Size NVARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Locations (
+    LocID NVARCHAR(6) PRIMARY KEY,
+    Size NVARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Items (
+    ItemID NVARCHAR(6) PRIMARY KEY,
+    Name NVARCHAR(255),
+    Style NVARCHAR(100),
+    Material NVARCHAR(100),
+    GenderID TINYINT,
+    Origin NVARCHAR(100),
+    BrandID INT,
+    UnitPrice DECIMAL(10, 2) CHECK (UnitPrice >= 0),
+    Color NVARCHAR(50),
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    UpdatedDate DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Items_Genders FOREIGN KEY (GenderID) REFERENCES Genders(GenderID),
+    CONSTRAINT FK_Items_Brands FOREIGN KEY (BrandID) REFERENCES Brands(BrandID)
+);
+
+CREATE TABLE Inventory (
+    InventoryID NVARCHAR(6) PRIMARY KEY,
+    ItemID NVARCHAR(6),
+    SizeID TINYINT,
+    Quantity INT CHECK (Quantity >= 0),
+    ImportDate DATE,
+    LocID NVARCHAR(6),
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    UpdatedDate DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Inventory_Items FOREIGN KEY (ItemID) REFERENCES Items(ItemID),
+    CONSTRAINT FK_Inventory_Sizes FOREIGN KEY (SizeID) REFERENCES Sizes(SizeID),
+    CONSTRAINT FK_Inventory_Locations FOREIGN KEY (LocID) REFERENCES Locations(LocID),
+    CONSTRAINT UQ_Inventory_ItemSize UNIQUE (ItemID, SizeID)
+);
+
+CREATE TABLE IncomingStock (
+    IncomingStockID INT PRIMARY KEY IDENTITY(1,1),
+    ItemID NVARCHAR(6),
+    InventoryID NVARCHAR(6),
+    SizeID TINYINT,
+    Quantity INT CHECK (Quantity > 0),
+    ImportDate DATE,
+    LocID NVARCHAR(6),
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    UpdatedDate DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_IncomingStock_Items FOREIGN KEY (ItemID) REFERENCES Items(ItemID),
+    CONSTRAINT FK_IncomingStock_Inventory FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID),
+    CONSTRAINT FK_IncomingStock_Sizes FOREIGN KEY (SizeID) REFERENCES Sizes(SizeID),
+    CONSTRAINT FK_IncomingStock_Locations FOREIGN KEY (LocID) REFERENCES Locations(LocID)
+);
+
+CREATE TABLE OutgoingStock (
+    OutgoingStockID INT PRIMARY KEY IDENTITY(1,1),
+    ItemID NVARCHAR(6),
+    InventoryID NVARCHAR(6),
+    SizeID TINYINT,
+    Quantity INT CHECK (Quantity > 0),
+    ExportDate DATE,
+    LocID NVARCHAR(6),
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    UpdatedDate DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_OutgoingStock_Items FOREIGN KEY (ItemID) REFERENCES Items(ItemID),
+    CONSTRAINT FK_OutgoingStock_Inventory FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID),
+    CONSTRAINT FK_OutgoingStock_Sizes FOREIGN KEY (SizeID) REFERENCES Sizes(SizeID),
+    CONSTRAINT FK_OutgoingStock_Locations FOREIGN KEY (LocID) REFERENCES Locations(LocID)
+);
