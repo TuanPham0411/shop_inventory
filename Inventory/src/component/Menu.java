@@ -33,16 +33,16 @@ public class Menu extends javax.swing.JPanel {
     private void init() {
         listMenu1.addItem(new Model_Menu("1", "Dashboard", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("2", "Items", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("3", "Brands", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("3", "Warehouse", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("3", "Location", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("4", "Import", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("5", "Export", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
 
         listMenu1.addItem(new Model_Menu("", "Administator", Model_Menu.MenuType.TITLE));
         listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("6", "Account", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("8", "Account", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("7", "Recovery", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("8", "Avatar", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("9", "More", Model_Menu.MenuType.MENU));
         
         listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));

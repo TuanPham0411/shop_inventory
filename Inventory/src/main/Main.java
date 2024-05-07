@@ -1,12 +1,12 @@
 package main;
 
 import form.Items;
-import form.Brands;
-import form.Import;
-import form.Export;
+import form.Warehouse;
+import form.Locations;
+import form.Import_his;
+import form.Export_his;
 import form.Account;
 import form.Recovery;
-import form.Avatar;
 import form.More;
 import form.Dashboard;
 import java.awt.Color;
@@ -14,32 +14,31 @@ import java.awt.Window;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import login.Login;
-import login.AccountDB;
 
 public class Main extends javax.swing.JFrame {
 
     private Dashboard home;
     private Items form1;
-    private Brands form2;
-    private Import form3;
-    private Export form4;
+    private Locations form2;
+    private Import_his form3;
+    private Export_his form4;
     private Account form5;
     private Recovery form6;
-    private Avatar form7;
-    private More form8;
+    private More form7;
+    private Warehouse form8;
 
     public Main() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
         home = new Dashboard();
         form1 = new Items();
-        form2 = new Brands();
-        form3 = new Import();
-        form4 = new Export();
+        form2 = new Locations();
+        form3 = new Import_his();
+        form4 = new Export_his();
         form5 = new Account();
         form6 = new Recovery();
-        form7 = new Avatar();
-        form8 = new More();
+        form7 = new More();
+        form8 = new Warehouse();
         menu.initMoving(Main.this);
         menu.addEventMenuSelected((int index) -> {
             switch (index) {
@@ -50,15 +49,18 @@ public class Main extends javax.swing.JFrame {
                     setForm(form1);
                     break;
                 case 2:
-                    setForm(form2);
+                    setForm(form8);
                     break;
                 case 3:
-                    setForm(form3);
+                    setForm(form2);
                     break;
                 case 4:
+                    setForm(form3);
+                    break;
+                case 5:
                     setForm(form4);
                     break;
-                case 8:
+                case 9:
                     if (Login.role.contains("Admin")){
                         setForm(form5);
                     } else {
@@ -66,7 +68,7 @@ public class Main extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "You are not allowed access due to insufficient permissions!");
                     }
                     break;
-                case 9:
+                case 10:
                     if (Login.role.contains("Admin")){
                         setForm(form6);
                     } else {
@@ -74,19 +76,11 @@ public class Main extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "You are not allowed access due to insufficient permissions!");
                     }
                     break;
-                case 10:
+                case 11:
                     if (Login.role.contains("Admin")){
                         setForm(form7);
                     } else {
                         form7.setEnabled(false);
-                        JOptionPane.showMessageDialog(this, "You are not allowed access due to insufficient permissions!");
-                    }
-                    break;
-                case 11:
-                    if (Login.role.contains("Admin")){
-                        setForm(form8);
-                    } else {
-                        form8.setEnabled(false);
                         JOptionPane.showMessageDialog(this, "You are not allowed access due to insufficient permissions!");
                     }
                     break;

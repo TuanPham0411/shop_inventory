@@ -1,4 +1,6 @@
 package login;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +16,13 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         txtusername.setBackground(new java.awt.Color(0,0,0,1));
         txtpassword.setBackground(new java.awt.Color(0,0,0,1));
+        
+        txtpassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButton1.doClick();
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

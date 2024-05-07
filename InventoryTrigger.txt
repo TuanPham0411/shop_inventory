@@ -1,0 +1,35 @@
+CREATE OR ALTER TRIGGER trg_UpdateInventory_Import
+ON Import
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted) OR EXISTS (SELECT * FROM deleted)
+    BEGIN
+        UPDATE inv
+        SET Quantity = Quantity + ISNULL(i.ImportedQuantity, 0) - ISNULL(d.ImportedQuantity, 0)
+        FROM Inventory inv
+        JOIN (SELECT ItemID, Size, SUM(Quantity) AS ImportedQuantity FROM inserted GROUP BY ItemID, Size) i 
+        ON inv.ItemID = i.ItemID AND inv.Size = i.Size
+        LEFT JOIN (SELECT ItemID, Size, SUM(Quantity) AS ImportedQuantity FROM deleted GROUP BY ItemID, Size) d 
+        ON inv.ItemID = d.ItemID AND inv.Size = d.Size;
+    END;
+END;
+GO
+
+CREATE OR ALTER TRIGGER trg_UpdateInventory_Export
+ON Export
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM inserted) OR EXISTS (SELECT * FROM deleted)
+    BEGIN
+        UPDATE inv
+        SET Quantity = Quantity - ISNULL(i.ExportedQuantity, 0) + ISNULL(d.ExportedQuantity, 0)
+        FROM Inventory inv
+        JOIN (SELECT ItemID, Size, SUM(Quantity) AS ExportedQuantity FROM inserted GROUP BY ItemID, Size) i 
+        ON inv.ItemID = i.ItemID AND inv.Size = i.Size
+        LEFT JOIN (SELECT ItemID, Size, SUM(Quantity) AS ExportedQuantity FROM deleted GROUP BY ItemID, Size) d 
+        ON inv.ItemID = d.ItemID AND inv.Size = d.Size;
+    END;
+END;
+GO
