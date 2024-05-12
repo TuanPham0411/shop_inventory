@@ -281,15 +281,6 @@ public class Export_form extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
-        String item = cmbItem.getSelectedItem().toString();
-        String size = cmbSize.getSelectedItem().toString();
-        String empid = cmbStaff.getSelectedItem().toString();
-        String reason = txtReason.getText();
-        String locID = txtLocid.getText();
-        String date = txtDate.getText();
-        int quantityImported = Integer.parseInt(txtQuan.getText());
-        int quantityStock = Integer.parseInt(txtQuan_stock.getText());
-        
         if (txtDes.getText().isEmpty() || 
             txtStaff.getText().isEmpty() || 
             txtReason.getText().isEmpty() || 
@@ -299,26 +290,36 @@ public class Export_form extends javax.swing.JFrame {
             txtQuan.getText().isEmpty()) {
 
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin.");
-        } else if (quantityImported > quantityStock){
-            JOptionPane.showMessageDialog(null, "Số lượng xuất kho không thể lớn hơn số hàng trong kho.");
         } else {
             try {
+                String item = cmbItem.getSelectedItem().toString();
+                String size = cmbSize.getSelectedItem().toString();
+                String empid = cmbStaff.getSelectedItem().toString();
+                String reason = txtReason.getText();
+                String date = txtDate.getText();
+                int quantityExported = Integer.parseInt(txtQuan.getText());
+                int quantityStock = Integer.parseInt(txtQuan_stock.getText());
+                
+                if (quantityExported > quantityStock){
+                    JOptionPane.showMessageDialog(null, "Số lượng xuất kho không được lớn hơn số hàng đang có.");
+                    return;
+                }
+
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 java.util.Date parsedDate = dateFormat.parse(date);
-                java.sql.Date importdate = new java.sql.Date(parsedDate.getTime());
+                java.sql.Date exportdate = new java.sql.Date(parsedDate.getTime());
 
                 try (Connection conn = ItemsDB.getConnection()) {
 
-                    String sql = "INSERT INTO Import (ItemID, Size, Quantity, EmployeeID, Reason, ImportDate) VALUES (?, ?, ?, ?, ?, ?)";
+                    String sql = "INSERT INTO Export (ItemID, Size, Quantity, EmployeeID, Reason, ExportDate) VALUES (?, ?, ?, ?, ?, ?)";
                     PreparedStatement pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, item);
                     pstmt.setString(2, size);
-                    pstmt.setInt(3, quantityImported);
+                    pstmt.setInt(3, quantityExported);
                     pstmt.setString(4, empid);
                     pstmt.setString(5, reason);
-                    pstmt.setDate(6, importdate);
-
-                    // Thực thi câu lệnh SQL
+                    pstmt.setDate(6, exportdate);
+                    
                     int rowsAffected = pstmt.executeUpdate();
                     if (rowsAffected > 0) {
                         JOptionPane.showMessageDialog(null, "Thông tin đã được lưu thành công vào cơ sở dữ liệu.");

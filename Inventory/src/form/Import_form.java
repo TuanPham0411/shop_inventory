@@ -281,14 +281,6 @@ public class Import_form extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
-        String item = cmbItem.getSelectedItem().toString();
-        String size = cmbSize.getSelectedItem().toString();
-        String empid = cmbStaff.getSelectedItem().toString();
-        String reason = txtReason.getText();
-        String locID = txtLocid.getText();
-        String date = txtDate.getText();
-        int quantityImported = Integer.parseInt(txtQuan.getText());
-        
         if (txtDes.getText().isEmpty() || 
             txtStaff.getText().isEmpty() || 
             txtReason.getText().isEmpty() || 
@@ -300,6 +292,13 @@ public class Import_form extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin.");
         } else {
             try {
+                String item = cmbItem.getSelectedItem().toString();
+                String size = cmbSize.getSelectedItem().toString();
+                String empid = cmbStaff.getSelectedItem().toString();
+                String reason = txtReason.getText();
+                String date = txtDate.getText();
+                int quantityImported = Integer.parseInt(txtQuan.getText());
+        
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 java.util.Date parsedDate = dateFormat.parse(date);
                 java.sql.Date importdate = new java.sql.Date(parsedDate.getTime());
@@ -315,7 +314,6 @@ public class Import_form extends javax.swing.JFrame {
                     pstmt.setString(5, reason);
                     pstmt.setDate(6, importdate);
 
-                    // Thực thi câu lệnh SQL
                     int rowsAffected = pstmt.executeUpdate();
                     if (rowsAffected > 0) {
                         JOptionPane.showMessageDialog(null, "Thông tin đã được lưu thành công vào cơ sở dữ liệu.");

@@ -72,20 +72,18 @@ public class ItemsDB {
         return tableModel;
     }
     
-    public static void printTable(DefaultTableModel tableModel) {
-        int columnCount = tableModel.getColumnCount();
+    public static void deleteData(Connection connection, int id) throws SQLException {
+        String sql = "DELETE FROM Items WHERE id = ?";
 
-        for (int i = 0; i < columnCount; i++) {
-            System.out.print(tableModel.getColumnName(i) + "\t");
-        }
-        System.out.println();
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
 
-        int rowCount = tableModel.getRowCount();
-        for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < columnCount; j++) {
-                System.out.print(tableModel.getValueAt(i, j) + "\t");
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Đã xóa dữ liệu thành công.");
+            } else {
+                System.out.println("Không tìm thấy dữ liệu để xóa.");
             }
-            System.out.println();
         }
     }
 }
