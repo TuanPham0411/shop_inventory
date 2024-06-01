@@ -65,10 +65,10 @@ public class Login extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel12.setFont(new java.awt.Font("SVN-Zebra", 3, 48)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("SVN-Aptima", 3, 36)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(25, 118, 211));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("TVY Inventory");
+        jLabel12.setText("TVY WAREHOUSE");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 500, 80));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/20753264.png"))); // NOI18N

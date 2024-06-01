@@ -207,6 +207,11 @@ public class Import_form extends javax.swing.JFrame {
 
         cmbStaff.setForeground(new java.awt.Color(102, 102, 102));
         cmbStaff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbStaffActionPerformed(evt);
+            }
+        });
         jPanel2.add(cmbStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 150, -1));
 
         jLabel39.setForeground(new java.awt.Color(255, 255, 255));
@@ -304,7 +309,10 @@ public class Import_form extends javax.swing.JFrame {
                 java.sql.Date importdate = new java.sql.Date(parsedDate.getTime());
 
                 try (Connection conn = ItemsDB.getConnection()) {
-
+                    if(size.contains("Choose Size")){
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn Size");
+                        return;
+                    }
                     String sql = "INSERT INTO Import (ItemID, Size, Quantity, EmployeeID, Reason, ImportDate) VALUES (?, ?, ?, ?, ?, ?)";
                     PreparedStatement pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, item);
@@ -337,11 +345,16 @@ public class Import_form extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnImportActionPerformed
+
+    private void cmbStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStaffActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbStaffActionPerformed
       
     private void Combobox(){
-        cmbSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SX", "S", "M", "L", "XL", "XXL" }));
+        cmbSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose Size", "SX", "S", "M", "L", "XL", "XXL" }));
         
         ArrayList<Object> columnData = new ArrayList<>();
+        columnData.add("Choose Items");
         for (int i = 0; i < Items.getRowCount(); i++) {
             Object value = Items.getValueAt(i, 0);
             if (value != null) {
@@ -352,6 +365,7 @@ public class Import_form extends javax.swing.JFrame {
         cmbItem.setModel(model);
         
         ArrayList<Object> columnData_acc = new ArrayList<>();
+        columnData_acc.add("Choose Staff ID");
         for (int i = 0; i < Staff.getRowCount(); i++) {
             Object value = Staff.getValueAt(i, 0);
             if (value != null) {

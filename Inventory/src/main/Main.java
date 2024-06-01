@@ -60,7 +60,7 @@ public class Main extends javax.swing.JFrame {
                 case 5:
                     setForm(form4);
                     break;
-                case 9:
+                case 10:
                     if (Login.role.contains("Admin")){
                         setForm(form5);
                     } else {
@@ -68,7 +68,7 @@ public class Main extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "You are not allowed access due to insufficient permissions!");
                     }
                     break;
-                case 10:
+                case 11:
                     if (Login.role.contains("Admin")){
                         setForm(form6);
                     } else {
@@ -76,7 +76,7 @@ public class Main extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "You are not allowed access due to insufficient permissions!");
                     }
                     break;
-                case 11:
+                case 6:
                     if (Login.role.contains("Admin")){
                         setForm(form7);
                     } else {

@@ -310,7 +310,10 @@ public class Export_form extends javax.swing.JFrame {
                 java.sql.Date exportdate = new java.sql.Date(parsedDate.getTime());
 
                 try (Connection conn = ItemsDB.getConnection()) {
-
+                    if(size.contains("Choose Size")){
+                        JOptionPane.showMessageDialog(null, "Please choose Size");
+                        return;
+                    }
                     String sql = "INSERT INTO Export (ItemID, Size, Quantity, EmployeeID, Reason, ExportDate) VALUES (?, ?, ?, ?, ?, ?)";
                     PreparedStatement pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, item);
@@ -345,9 +348,10 @@ public class Export_form extends javax.swing.JFrame {
     }//GEN-LAST:event_btnImportActionPerformed
       
     private void Combobox(){
-        cmbSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SX", "S", "M", "L", "XL", "XXL" }));
+        cmbSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose Size", "SX", "S", "M", "L", "XL", "XXL" }));
         
         ArrayList<Object> columnData = new ArrayList<>();
+        columnData.add("Choose Item");
         for (int i = 0; i < Items.getRowCount(); i++) {
             Object value = Items.getValueAt(i, 0);
             if (value != null) {
@@ -358,6 +362,7 @@ public class Export_form extends javax.swing.JFrame {
         cmbItem.setModel(model);
         
         ArrayList<Object> columnData_acc = new ArrayList<>();
+        columnData_acc.add("Choose Staff ID");
         for (int i = 0; i < Staff.getRowCount(); i++) {
             Object value = Staff.getValueAt(i, 0);
             if (value != null) {
